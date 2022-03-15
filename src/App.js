@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 function App() {
   const [pokemons, setPokemons] = useState([]);
@@ -6,23 +7,19 @@ function App() {
 
   useEffect(() => {
     if(search !== false){
-      fetch("https://pokeapi.co/api/v2/pokemon")
-          .then(response => {
-            return response.json();
-        }).then(response => {
-            setPokemons(response.results);
-        }).catch(err=>{
-            console.log(err);
-        });
+      axios.get('https://pokeapi.co/api/v2/pokemon')
+      .then(response=>{
+        setPokemons(response.data.results)
+      })
     }
   }, [search])
   
   return (
-    <div>
-      <button onClick={() => setSearch(true)}>Fetch Pokemons</button>
-      <ul>
+    <div className="container mt-5">
+      <button className="btn btn-secondary" onClick={() => setSearch(true) }>Fetch Pokemons</button>
+      <ul className="list-group mt-3">
         {pokemons && pokemons.length > 0 && pokemons.map( pokemon => (
-          <li key={pokemon.name}>{pokemon.name}</li>
+          <li className="list-group-item" key={pokemon.name}>{pokemon.name}</li>
         ))}
       </ul>
     </div>
