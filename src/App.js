@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 
 function App() {
-  const [pokemons, setPokemons] = useState([])
+  const [pokemons, setPokemons] = useState([]);
+  const [search, setSearch] = useState(false);
+
   useEffect(() => {
-    fetch("https://pokeapi.co/api/v2/pokemon")
+    if(search !== false){
+      fetch("https://pokeapi.co/api/v2/pokemon")
           .then(response => {
             return response.json();
         }).then(response => {
@@ -11,11 +14,12 @@ function App() {
         }).catch(err=>{
             console.log(err);
         });
-  }, [])
+    }
+  }, [search])
   
   return (
-    <div >
-      <h2>Pokemon List</h2>
+    <div>
+      <button onClick={() => setSearch(true)}>Fetch Pokemons</button>
       <ul>
         {pokemons && pokemons.length > 0 && pokemons.map( pokemon => (
           <li key={pokemon.name}>{pokemon.name}</li>
